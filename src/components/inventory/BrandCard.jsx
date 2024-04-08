@@ -20,7 +20,7 @@ const BrandCard = (props) => {
     <Col key={brand._id}>
       <Card
         className={`custom-card-${theme}`}
-        style={{ width: "13rem", height: "16.5rem" }}
+        style={{ width: "13rem", height: "15.5rem" }}
       >
         <Card.Body>
           <div
@@ -28,7 +28,7 @@ const BrandCard = (props) => {
             className="d-flex flex-column align-items-center"
           >
             <Image
-              src={`data:${brand.imgMimeType};base64,${brand.brandImage}`} 
+              src={brand.brandImage} 
               style={{ height: "6.2rem", width: "6.2rem" , borderRadius : "20px" }}
               className="mb-3 mt-3"
               alt={`${brand.brandName}_image`}
@@ -36,7 +36,6 @@ const BrandCard = (props) => {
 
             <div className="mt-3 d-flex flex-column align-items-center">
               <Card.Title>{brand.brandName}</Card.Title>
-              <Card.Text className="">{`Categories : ${brand.categories.length}`}</Card.Text>
             </div>
           </div>
           <div

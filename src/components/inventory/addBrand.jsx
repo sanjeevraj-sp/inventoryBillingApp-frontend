@@ -4,7 +4,7 @@ import { Offcanvas, Button, Form, InputGroup } from "react-bootstrap";
 import { validateAddBrandForm } from "../../utils/formValidation";
 import "../../stylesheets/addBrandForm.css";
 import { useSelector } from "react-redux";
-import { formToJSON } from "axios";
+import imageUtils from "../../utils/imageServices.js"
 
 const AddBrand = (props) => {
   const { show, handleClose, handleSubmit } = props;
@@ -14,25 +14,14 @@ const AddBrand = (props) => {
   const theme = userStore.theme;
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
-
-    if (type === "file") {
-      // Handle file input separately
-      const file = e.target.files[0];
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: file,
-      }));
-    } else {
-      // Handle regular form fields
+    const { name, value } = e.target;
       setFormData((prevData) => ({
         ...prevData,
         [name]: value || "",
       }));
-    }
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     const validationErrors = validateAddBrandForm(formData);
     if (validationErrors) {
       setErrors(validationErrors);
@@ -40,7 +29,10 @@ const AddBrand = (props) => {
     }
     setErrors({});
     setFormData({});
-    handleSubmit(formData);
+    const file = formData.brandImage;
+    const blob = await imageUtils.getFileAsBlob(file);
+    const base64Image = await imageUtils.convertBase64(blob);
+    handleSubmit({ ...formData, brandImage: base64Image });
   };
 
   return (

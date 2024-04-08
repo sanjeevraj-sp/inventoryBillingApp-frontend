@@ -4,7 +4,6 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import { Image } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import editIcon from "../../images/editIcon.png";
 import deleteIcon from "../../images/deleteIcon.png";
 import Modal from "react-bootstrap/Modal";
@@ -33,7 +32,7 @@ const ProductCard = (props) => {
               onClick={handleShow}
             >
               <Image
-                src={`data:${product.imgMimeType};base64,${product.productImage}`}
+                src={product.productImage}
                 style={{
                   height: "6.2rem",
                   width: "6.2rem",
@@ -77,7 +76,7 @@ const ProductCard = (props) => {
         </Modal.Header>
         <Modal.Body>
           <img
-            src={`data:${product.imgMimeType};base64,${product.productImage}`}
+            src={product.productImage}
             style={{ height: "6rem", width: "6rem" }}
             className='mb-3 mt-3'
           />

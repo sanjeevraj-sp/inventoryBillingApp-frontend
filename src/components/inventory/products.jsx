@@ -54,7 +54,11 @@ const Products = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [allProducts]);
+  }, []);
+
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, [allProducts]);
 
   const fetchProductsByBrand = async (brand) => {
     try {

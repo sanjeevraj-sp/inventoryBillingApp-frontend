@@ -50,7 +50,7 @@ export const validateLogInForm = (formData) => {
 export const validateAddBrandForm = (formData) => {
   const schema = Joi.object({
     brandName: Joi.string().required().label("Brand Name"),
-    brandImage: Joi.any().required().label("Brand Image"),
+    brandImage: Joi.any().label("Brand Image"),
   });
 
   const { error } = schema.validate(formData, { abortEarly: false });
@@ -78,8 +78,9 @@ export const validateEditBrandForm = (formData) => {
 };
 
 export const validateAddProductForm = (formData) => {
+  const {brandId, ...formDataWithoutBrandId } = formData;
   const schema = Joi.object({
-    productImage: Joi.any().required().label("Product Image"),
+    productImage: Joi.any().label("Product Image"),
     productName: Joi.string().required().label("Product Name"),
     category: Joi.string().required().label("Category"),
     purchasePrice: Joi.number().min(0).required().label("Purchase Price"),
@@ -89,7 +90,7 @@ export const validateAddProductForm = (formData) => {
     stock: Joi.number().min(0).required().label("Stock"),
     description: Joi.string().allow("").label("Description"),
   });
-  const { error } = schema.validate(formData, { abortEarly: false });
+  const { error } = schema.validate(formDataWithoutBrandId , { abortEarly: false });
   const validationErrors = {};
   if (!error) return validationErrors;
   for (let item of error.details) {

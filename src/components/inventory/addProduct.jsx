@@ -5,9 +5,10 @@ import { validateAddProductForm } from "../../utils/formValidation";
 import { validateEditProductForm } from "../../utils/formValidation";
 import "../../stylesheets/addProductForm.css";
 import { useSelector } from "react-redux";
-import { http , host } from "../../utils/httpServices";
+import { http, host } from "../../utils/httpServices";
 import { useNavigate } from "react-router-dom";
-import toast , { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import imageUtils from "../../utils/imageServices.js";
 
 const AddProduct = (props) => {
   const navigate = useNavigate();
@@ -64,16 +65,16 @@ const AddProduct = (props) => {
       if (!isAddingProduct) {
         try {
           data = new FormData();
-          data = {...formData}
-          delete data.productImage
+          data = { ...formData };
+          delete data.productImage;
           const result = await http.put(
             `${host}/inventory/updateProduct`,
-             data,
+            data,
             token
           );
           toast.success("Product updated successfully");
           handleClose();
-          navigate("/products" ,  {state : { brand : brand }})
+          window.location.reload();
         } catch (error) {
           toast.error(
             error.response?.data?.message ||
@@ -83,6 +84,10 @@ const AddProduct = (props) => {
         }
       } else {
         try {
+          const file = formData.productImage;
+          const blob = await imageUtils.getFileAsBlob(file);
+          const base64Image = await imageUtils.convertBase64(blob);
+          formData.productImage = base64Image;
           const data = new FormData();
           for (const key in formData) {
             if (formData.hasOwnProperty(key)) {
@@ -96,7 +101,7 @@ const AddProduct = (props) => {
           );
           toast.success("Product added successfully");
           handleClose();
-          navigate("/products" ,  {state : { brand : brand }})
+          window.location.reload();
         } catch (error) {
           toast.error(
             error.response?.data?.message ||
@@ -110,7 +115,7 @@ const AddProduct = (props) => {
 
   return (
     <>
-    <Toaster/>
+      <Toaster />
       <Offcanvas
         show={show}
         onHide={handleClose}
@@ -123,15 +128,14 @@ const AddProduct = (props) => {
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body className={`addProductForm-${theme}`}>
-          <Form onSubmit={handleFormSubmit} >
+          <Form onSubmit={handleFormSubmit}>
             {isAddingProduct && (
               <Form.Group className="mb-3" controlId="productImage">
                 <Form.Label>Product Image</Form.Label>
                 <Form.Control
                   type="file"
                   name="productImage"
-                  accept="image/jpeg,image/jpg,image/png"
-                  onChange = {handleChange}
+                  onChange={handleChange}
                 />
                 {errors.productImage && (
                   <Form.Text className="text-danger">

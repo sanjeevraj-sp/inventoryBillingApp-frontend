@@ -4,7 +4,6 @@ import { Spinner } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { http, host } from "../../utils/httpServices";
 import { setBrands } from "../../redux/slices/brands";
 import toast, { Toaster } from "react-hot-toast";
 import useLogout from "../../hooks/logout";
@@ -21,6 +20,7 @@ import "../../stylesheets/brands.css";
 import AddBrand from "./addBrand";
 import { addBrand } from "../../redux/slices/brands";
 import brandsIcon from "../../images/brandsIcon.png"
+import { http, host } from "../../utils/httpServices";
 
 const Brands = () => {
   const dispatch = useDispatch();
@@ -78,19 +78,12 @@ const Brands = () => {
   const handleAddBrandFormData = async (formData) => {
     handleCloseOffcanvas();
     try {
-      const data = new FormData();
-      data.append("brandName", formData.brandName);
-      data.append("brandImage", formData.brandImage);
-      const response = await http.post(
-        `${host}/inventory/addBrand`,
-        data,
-        token
-      );
-      dispatch(addBrand({ newBrand: response.data }));
+      const result = await http.post( `${host}/inventory/addBrand`, formData , token);
+      dispatch(addBrand({ newBrand: result.data }));
       toast.success("Brand added successfully");
-      window.location.reload();
     } catch (error) {
-      console.error(`Error in adding brand : ${error}`);
+      toast.error("Error in adding Brand!");
+      console.log(error);
     }
   };
 
@@ -108,11 +101,10 @@ const Brands = () => {
       );
       dispatch(updateBrand({ updatedBrand: result.data.updatedBrand }));
       setEditBrand({});
-      window.location.reload();
-      toast.success(result.data.message);
+      toast.success("Brand updated successfully");
     } catch (error) {
       toast.error(
-        error.response?.data?.message || error.message || "Error Editing brand"
+        "Error Editing brand"
       );
     }
   };
@@ -167,7 +159,7 @@ const Brands = () => {
             <Col key={1}>
               <Card
                 className={`addBrand-card-${theme}`}
-                style={{ width: "13rem", height: "16.5rem" }}
+                style={{ width: "13rem", height: "15.5rem" }}
                 onClick={() => handleAddBrandBtn()}
               >
                 <Card.Body className="d-flex flex-column justify-content-center align-items-center">
@@ -186,11 +178,26 @@ const Brands = () => {
             </Col>
           </Row>
         ) : (
-          <div className="d-flex justify-content-center align-items-center">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </div>
+          <Col key={1}>
+          <Card
+            className={`addBrand-card-${theme}`}
+            style={{ width: "13rem", height: "15.5rem" }}
+            onClick={() => handleAddBrandBtn()}
+          >
+            <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+              <Image
+                src={addBrandIcon}
+                style={{
+                  height: "5rem",
+                  width: "5rem",
+                  borderRadius: "50px",
+                }}
+                className="mb-3 mt-3"
+                alt={`Add Brand`}
+              />
+            </Card.Body>
+          </Card>
+        </Col>
         )}
       </div>
 

@@ -20,7 +20,7 @@ const LowStockProductCard = ({product}) => {
               className="d-flex flex-column align-items-center"
             >
               <Image
-                src={`data:${product.imgMimeType};base64,${product.productImage}`} 
+                src={product.productImage} 
                 style={{ height: "6.2rem", width: "6.2rem" , borderRadius : "20px" }}
                 className="mb-3 mt-3"
                 alt={`${product.productName}_image`}

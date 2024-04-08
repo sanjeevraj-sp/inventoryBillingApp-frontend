@@ -14,11 +14,13 @@ const get = async (url, data = {}, token = null) => {
 };
 
 
-const post = async (url, data = {}, token = null) => {
+const post = async (url, data, token = null) => {
   const headers = {};
+  headers["content-type"] = "multipart/form-data";
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
+  console.log('http ser ' , data);
   const result = await axios.post(url, data, {
     headers: headers,
   });
@@ -57,4 +59,5 @@ export const http = {
   delete: remove,
 };
 
+// export const host = "http://localhost:3000"
 export const host = "https://inventorybillingapp-backend.onrender.com";
