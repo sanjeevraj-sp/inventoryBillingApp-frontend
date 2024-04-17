@@ -59,5 +59,5 @@ export const http = {
   delete: remove,
 };
 
-export const host = "http://localhost:3000"
-// export const host = "https://inventorybillingapp-backend.onrender.com";
+// export const host = "http://localhost:3000"
+export const host = "https://inventorybillingapp-backend.onrender.com";
