@@ -7,14 +7,14 @@ import Invoice from '../components/invoice/invoice';
 import Report from '../components/reports/reports';
 import Stock from '../components/stock/stock';
 import Products from '../components/inventory/products';
-import TodaysOrderReport from '../components/reports/todaysOrdReport';
-import LowStockReport from '../components/reports/lowStkReport';
-import AnalyticsReport from '../components/reports/salesAndProfitReport';
+// import TodaysOrderReport from '../components/reports/todaysOrdReport';
+// import LowStockReport from '../components/reports/lowStkReport';
+// import AnalyticsReport from '../components/reports/salesAndProfitReport';
 
 const AppRoutes = ({ sidebarToggle }) => {
   return (
     <Routes>
-      <Route path="/*" element={<DashBoard sidebarToggle={sidebarToggle} />} />
+      <Route path="/*" element={<DashBoard />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/login" element={<LogIn />} />
       <Route path="/inventory" element={<Inventory sidebarToggle={sidebarToggle} />} />
